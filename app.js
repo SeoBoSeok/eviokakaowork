@@ -3,7 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const session = require('express-session');
+const dotenv = require('dotenv');
 const nunjucks = require('nunjucks')
+
+dotenv.config(); // dotenv setting
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -21,10 +25,21 @@ nunjucks.configure('views', {
 });
 
 app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(cookieParser(process.env.COOKIE_SECRET));
+
+app.use(session({
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.COOKIE_SECRET,
+  cookie: {
+    httpOnly: true,
+    secure: false,
+  },
+  name: 'session-cookie',
+}));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
