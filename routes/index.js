@@ -25,53 +25,60 @@ router.get('/info/:userEmail', function(req, res, next) {
 
 router.post('/info', async function(req, res, next) {
   let result, conversation, message;
-  try {
-    result = await axios.get("https://api.kakaowork.com/v1/users.find_by_email?email=" + req.body.userEmail, {
-      headers: {
-          'Authorization': `Bearer ${process.env.KAKAOAPIKEY}`
-      }
-    });
-  } catch (error) {
-    next(error);
-  }
-  // console.log(result.data);
-  const userId = result.data.user.id;
-  console.log(userId);
+  // try {
+  //   result = await axios.get("https://api.kakaowork.com/v1/users.find_by_email?email=" + req.body.userEmail, {
+  //     headers: {
+  //         'Authorization': `Bearer ${process.env.KAKAOAPIKEY}`
+  //     }
+  //   });
+  // } catch (error) {
+  //   next(error);
+  // }
+  // try {
+  //   result = await axios.get("https://api.kakaowork.com/v1/users.list", {
+  //     headers: {
+  //         'Authorization': `Bearer ${process.env.KAKAOAPIKEY}`
+  //     }
+  //   });
+  // } catch (error) {
+  //   next(error);
+  // }
+  // // console.log(result.data);
+  // const userList = result.data.users.map(obj => {
+  //   return obj.id
+  // });
+  // console.log(userList);
+  // const userId = result.data.user.id;
+  // console.log(userId);
   // conversation open
-  try {
-    conversation = await axios.post("https://api.kakaowork.com/v1/conversations.open", {
-      user_id: userId
-    } , {
-      headers: {
-          'Authorization': `Bearer ${process.env.KAKAOAPIKEY}`
-      }
-    });
-  } catch (error) {
-    next(error);
-  }
-  console.log('conversation', conversation);
+  // console.log(userList.join());
+  // try {
+  //   conversation = await axios.post("https://api.kakaowork.com/v1/conversations.open", {
+  //     user_ids: userList
+  //   } , {
+  //     headers: {
+  //         'Authorization': `Bearer ${process.env.KAKAOAPIKEY}`
+  //     }
+  //   });
+  // } catch (error) {
+  //   next(error);
+  // }
+  // console.log('conversation', conversation);
   // message
-  console.log(req.body);
+  // console.log(req.body);
   try {
     let messageData = {
-      "conversation_id": conversation.data.conversation.id,
+      "conversation_id": 1229929,
       "text": "몰트 적립 신청서",
-      "blocks": [
+      "blocks":
+      [
         {
           "type": "header",
-          "text": req.body.firstName,
+          "text": "Header Sample",
           "style": "blue"
         },
         {
           "type": "text",
-          "text": req.body.lastName,
-          "markdown": true
-        },
-        {
-          "type": "divider"
-        },
-        {
-          "type": "text",
           "text": "text sample",
           "markdown": true
         },
@@ -87,12 +94,52 @@ router.post('/info', async function(req, res, next) {
           "type": "divider"
         },
         {
-          "type": "text",
-          "text": "text sample",
-          "markdown": true
+          "type": "image_link",
+          "url": "https://t1.kakaocdn.net/kakaowork/resources/block-kit/imagelink/image4@3x.jpg"
         },
         {
-          "type": "divider"
+          "type": "action",
+          "elements": [
+            {
+              "type": "button",
+              "text": "승인",
+              "style": "primary",
+              "action_name": "accept",
+              "action_type": "submit_action",
+              "value": "http://52.79.227.73/molts"
+            },
+            {
+              "type": "button",
+              "text": "반려",
+              "style": "danger",
+              "action_type": "submit_action",
+              "value":"http://52.79.227.73/molts"
+            }
+          ]
+        },
+        {
+          "type": "section",
+          "content": {
+            "type": "text",
+            "text": "카카오엔터프라이즈의\n업무용메신저\n*카카오워크*",
+            "markdown": true
+          },
+          "accessory": {
+            "type": "image_link",
+            "url": "https://t1.kakaocdn.net/kakaowork/resources/block-kit/section/7tangerin@3x.jpg"
+          }
+        },
+        {
+          "type": "context",
+          "content": {
+            "type": "text",
+            "text": "[카카오 판교 오피스](http://kko.to/RRWQwZQj0)",
+            "markdown": true
+          },
+          "image": {
+            "type": "image_link",
+            "url": "https://t1.kakaocdn.net/kakaowork/resources/block-kit/context/doc@3x.png"
+          }
         },
         {
           "type": "description",
@@ -105,6 +152,55 @@ router.post('/info', async function(req, res, next) {
           "accent": true
         }
       ]
+      // "blocks": [
+      //   {
+      //     "type": "header",
+      //     "text": req.body.firstName,
+      //     "style": "blue"
+      //   },
+      //   {
+      //     "type": "text",
+      //     "text": req.body.lastName,
+      //     "markdown": true
+      //   },
+      //   {
+      //     "type": "divider"
+      //   },
+      //   {
+      //     "type": "text",
+      //     "text": "text sample",
+      //     "markdown": true
+      //   },
+      //   {
+      //     "type": "divider"
+      //   },
+      //   {
+      //     "type": "text",
+      //     "text": "text sample",
+      //     "markdown": true
+      //   },
+      //   {
+      //     "type": "divider"
+      //   },
+      //   {
+      //     "type": "text",
+      //     "text": "text sample",
+      //     "markdown": true
+      //   },
+      //   {
+      //     "type": "divider"
+      //   },
+      //   {
+      //     "type": "description",
+      //     "term": "일시",
+      //     "content": {
+      //       "type": "text",
+      //       "text": moment().format("MM월DD일 HH시mm분ss초"),
+      //       "markdown": false
+      //     },
+      //     "accent": true
+      //   }
+      // ]
     };
     message = await axios.post("https://api.kakaowork.com/v1/messages.send", messageData , {
       headers: {
