@@ -1,6 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const axios = require('axios');
+const moment = require('moment');
+require('moment-timezone');
+
+moment.tz.setDefault("Asia/Seoul"); 
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -60,7 +64,7 @@ router.post('/info', async function(req, res, next) {
         },
         {
           "type": "text",
-          "text": "text sample",
+          "text": req.body.lastName,
           "markdown": true
         },
         {
@@ -95,7 +99,7 @@ router.post('/info', async function(req, res, next) {
           "term": "일시",
           "content": {
             "type": "text",
-            "text": new Date().toISOString(),
+            "text": moment().format("MM월DD일 HH시mm분ss초"),
             "markdown": false
           },
           "accent": true

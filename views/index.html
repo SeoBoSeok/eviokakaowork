@@ -23,7 +23,7 @@
 
           <div class="col-sm-6">
             <label for="lastName" class="form-label">근무일</label>
-            <input type="text" class="form-control" name="lastName" id="lastName" placeholder="" value="" required="">
+            <input type="date" class="form-control" name="lastName" id="lastName" placeholder="" value="" required="">
             <div class="invalid-feedback">
               Valid last name is required.
             </div>
@@ -41,7 +41,7 @@
           </div> -->
 
           <div class="col-12">
-            <label for="email" class="form-label">근무시간 <span class="text-muted">(Optional)</span></label>
+            <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
             <input type="text" class="form-control" name="userEmail" id="email" placeholder="you@example.com">
             <div class="invalid-feedback">
               Please enter a valid email address for shipping updates.
@@ -113,11 +113,14 @@
   <script>
       let form = document.getElementById("kakaoForm");
 
+      let dateControl = document.querySelector('input[type="date"]');
+      dateControl.value = new Date().toISOString('ko').slice(0, 10);
+
       function handleSubmit(event) {
         event.preventDefault();
         const data = new FormData(event.target);
-        const firstNameValue = data.get("firstNameValue");
-        const lastNameValue = data.get("lastNameValue");
+        const firstNameValue = data.get("firstName");
+        const lastNameValue = data.get("lastName");
         const userEmailValue = data.get("userEmail");
         // const lastNameValue = data.get("lastName");
         // const userEmailValue = data.get("userEmail");
@@ -137,6 +140,7 @@
         axios.post('/info', postData).then(function(result){
             console.log(result);
             form.reset();
+            dateControl.value = new Date().toISOString('ko').slice(0, 10);
             Swal.fire(result.data.success ? "메세지를 성공적으로 보냈습니다." : "메세지를 보내지 못했습니다.");
         });
       }
